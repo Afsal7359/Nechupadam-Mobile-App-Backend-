@@ -1,3 +1,4 @@
+
 const TreatmentDeatils = require("../../models/TreatmentDetails");
 
 module.exports={
@@ -13,7 +14,7 @@ module.exports={
             }else if(!patientId){
                 return res.status(400).json({
                     success:false,
-                    message:"Patient Id is require",
+                    message:"Patient Id is  require",
                 });
             }
             const newData = await TreatmentDeatils.create({content,patientId});
