@@ -10,7 +10,7 @@ const userAuthMid = (req,res,next)=>{
     if(!token){
         res.status(403).json({
             success:false,
-            message:"User Not Found !!"
+            message:"token not found !!"
         })
     }
     try {
