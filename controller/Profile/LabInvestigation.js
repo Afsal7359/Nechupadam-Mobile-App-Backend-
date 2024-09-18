@@ -1,5 +1,5 @@
 const LabInvestigation = require("../../models/LabInvestigation");
-const  cloudinary = require("../../utils/cloudinary");
+const  cloudinary = require("../../utils/cloudinarry");
 
 module.exports={
     AddLabInvestigation: async(req,res)=>{
