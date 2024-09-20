@@ -75,7 +75,7 @@ module.exports={
             }else if(!content){
                 return res.status(400).json({
                     success:false,
-                    message:"TreatmentDetails is required"
+                    message:"Diagnosis is required"
                 })
             }else if(!patientId){
                 return res.status(400).json({

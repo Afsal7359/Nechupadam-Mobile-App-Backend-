@@ -1,6 +1,7 @@
 const User = require("../../models/UserModel");
 const bcrypt  = require('bcryptjs');
 const jwt = require('jsonwebtoken')
+var request = require('request');
 
 module.exports={
 
@@ -55,6 +56,19 @@ module.exports={
     PatientRegister: async (req, res) => {
         try {
             let userInfo = req.body;
+            console.log(userInfo,"user");
+            if(!userInfo.name){
+                return res.status(400).json({
+                    success: false,
+                    message: "Name is required"
+                })
+            }else if(!userInfo.phone){
+                return res.status(400).json({
+                    success: false,
+                    message:"Phone Number is required"
+                })
+            }
+            
             // Check if the user is already registered
             const existingUser = await User.findOne({ phone: userInfo.phone });
             
@@ -65,16 +79,13 @@ module.exports={
                     message: "User already registered with this phone number."
                 });
             }
-                // Hash the password before storing it
-                const salt = await bcrypt.genSalt(10); // Generate salt (10 rounds is a good default)
-                const hashedPassword = await bcrypt.hash(userInfo.password, salt);
+          
     
             // If user is not found, create a new user (implement user creation logic here)
             const newUser = new User({
                 name: userInfo.name,
                 phone: userInfo.phone,
                 email:userInfo.email,
-                password:hashedPassword
             });
     
             // Save the new user
@@ -100,5 +111,110 @@ module.exports={
             });
         }
     },
-    
+    SendOtpToPatient: async(req,res)=>{
+        try {
+            const { phone } = req.body;
+
+          
+            if(!phone){
+                return res.status(400).json({
+                    success:false,
+                    message: "Phone number is required"
+                })
+            }
+            const existingUser = await User.find({phone:phone});
+
+            if(existingUser.length ===0){
+                return res.status(400).json({
+                    success:false,
+                    message: "User not found! Please register if you don't have an account",
+                })
+            }
+
+            var options = {
+            'method': 'POST',
+            'url': `https://cpaas.messagecentral.com/verification/v3/send?countryCode=91&customerId=C-35C587C4A93E482&flowType=SMS&mobileNumber=${phone}`,
+            'headers': {
+            'authToken': "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJDLTM1QzU4N0M0QTkzRTQ4MiIsImlhdCI6MTcyNjc0MTA4MSwiZXhwIjoxODg0NDIxMDgxfQ.tdOkqvsVGhRP_BRq7zGW5vCLdMvLeXX_mFArIrOt__QTiSI65EAUAF2fSxEv_do7sc1t2YIuhFl2iwWZPHHiuw"
+            }
+            };
+            request(options, function (error, Response) {
+                const response = JSON.parse(Response.body);
+                console.log(response,"res");
+                
+                if(response.responseCode === 200){
+                    return res.status(200).json({
+                        success:true,
+                        message: "Otp sent successfully",
+                        verificationId:response.data.verificationId
+                    })
+                }else if(response.responseCode === 506){
+                    return res.status(200).json({
+                        success:true,
+                        message: "Otp sent successfully",
+                        verificationId:response.data.verificationId
+                    })
+                }else{
+                    return res.status(400).json({
+                        success:false,
+                        message: "Failed to send otp"
+                    })
+                }
+            });
+              } 
+              catch (error) {
+            console.log(error);
+            
+        }
+    },
+    ValidatePatientsOTP: async(req,res)=>{
+        try {
+            const {otp,phone,verificationId}= req.body;
+            if(!otp){
+                return res.status(400).json({
+                    success:false,
+                    message: "OTP is required"
+                })
+            }
+            const UserData = await User.find({phone:phone})
+        var options = {
+        'method': 'GET',
+        'url': `https://cpaas.messagecentral.com/verification/v3/validateOtp?countryCode=91&mobileNumber=${phone}&verificationId=${verificationId}&customerId=C-35C587C4A93E482&code=${otp}`,
+        'headers': {
+        'authToken': "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJDLTM1QzU4N0M0QTkzRTQ4MiIsImlhdCI6MTcyNjc0MTA4MSwiZXhwIjoxODg0NDIxMDgxfQ.tdOkqvsVGhRP_BRq7zGW5vCLdMvLeXX_mFArIrOt__QTiSI65EAUAF2fSxEv_do7sc1t2YIuhFl2iwWZPHHiuw"
+        }
+        };
+        request(options, function (error, Response) {
+
+            const response = JSON.parse(Response.body);
+            console.log(response);
+            const token = jwt.sign({ userId: UserData._id }, process.env.JWT_SECRET);
+           if(response.responseCode === 200){
+            return res.status(200).json({
+                success:true,
+                message: "OTP Verified SuccessFully",
+                token:token,
+                data:UserData,
+            })
+           }else if(response.responseCode === 703){
+            return res.status(200).json({
+                success:true,
+                message: "OTP Verified SuccessFully",
+                token:token,
+                data:UserData,
+            })
+           }else{
+            return res.json({
+                success:false,
+                message: response.message,
+            })
+           }
+        });
+        } catch (error) {
+            res.status(500).json({
+                success:false,
+                message:"Server error"
+            })
+        }
+    }
 }
