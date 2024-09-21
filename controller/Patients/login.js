@@ -114,8 +114,8 @@ module.exports={
     SendOtpToPatient: async(req,res)=>{
         try {
             const { phone } = req.body;
-
-          
+            console.log(phone);
+            
             if(!phone){
                 return res.status(400).json({
                     success:false,
@@ -188,7 +188,7 @@ module.exports={
 
             const response = JSON.parse(Response.body);
             console.log(response);
-            const token = jwt.sign({ userId: UserData._id }, process.env.JWT_SECRET);
+            const token = jwt.sign({ userId: UserData[0]._id }, process.env.JWT_SECRET);
            if(response.responseCode === 200){
             return res.status(200).json({
                 success:true,
