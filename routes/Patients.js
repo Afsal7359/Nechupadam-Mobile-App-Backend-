@@ -2,7 +2,6 @@ const express = require('express');
 const userAuthMid = require('../Middlewear/Auth-middlewear');
 const ChiefComplaints = require('../controller/Profile/ChiefComplaints');
 const MedicalHistory = require('../controller/Profile/MedicalHistory');
-const CheifComplaint = require('../models/ChiefComplaints');
 const DentalHistory = require('../controller/Profile/DentalHistory');
 const DrugAllergy = require('../controller/Profile/DrugAllergy');
 const DrugHistory = require('../controller/Profile/DrugHistory');
@@ -15,7 +14,21 @@ const LabInvestigation = require('../controller/Profile/LabInvestigation');
 const upload = require('../utils/Multer');
 const NewAppoinment = require('../controller/Profile/NewAppoinment');
 const Points = require('../controller/Profile/Points');
+const Booking = require('../controller/Doctor/Booking');
+const Patient = require('../controller/Doctor/Patient');
+const Notification = require('../controller/Doctor/Notification');
 const router= express.Router();
+
+
+//booking
+router.post('/add-booking',userAuthMid,Booking.AddBooking);
+
+//Add Patient
+router.post('/add-patient',userAuthMid,Patient.AddPatientsfromDoctor);
+
+//add Notification 
+router.post('/add-notification',userAuthMid,Notification.AddNotification);
+router.get('/get-notification',userAuthMid,Notification.GetNotificationById);
 
 
 // cheifcomplaint

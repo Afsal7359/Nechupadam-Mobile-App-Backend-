@@ -5,22 +5,38 @@ const UserSchema = new mongoose.Schema({
     name:{
         type:String,
         trim:true,
-        require:true,
     },
     email:{
         type:String,
-        require:true,
         trim:true,
     },
     phone:{
         type:String,
-        require:true,
         trim:true,
     },
-    password:{
+    patientNo:{
         type:String,
-        require:true,
-        trim:true
+        trim:true,
+    },
+    age:{
+        type:String,
+        trim:true,
+    },
+    sex:{
+        type:String,
+        trim:true,
+    },
+    address:{
+        type:String,
+        trim:true,
+    },
+    doctor:{
+        type:String,
+        trim:true,
+    },
+    dob:{
+        type:String,
+        trim:true,
     }
 })
 const  User = mongoose.model('user',UserSchema);
