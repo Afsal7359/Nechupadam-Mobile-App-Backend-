@@ -35,7 +35,23 @@ module.exports={
             })
         }
     },
-    
+    GetBooking: async(req,res)=>{
+        try {
+            const id = req.userId
+            console.log(id,"id");
+            const Data = await Booking.find({patientId:id}).sort({_id:-1}).limit(5);
+            return res.status(200).json({
+                success:true,
+                message:"Booking Details",
+                data:Data
+            })
+        } catch (error) {
+            re.status(500).json({
+                success:false,
+                message:"Internal Server Error",
+            })
+        }
+    }
     // AddBookingfromDoctor: async(req,res)=>{
     //     try {
     //         const {patientId,date,time,procedure,remarks}=req.body;
