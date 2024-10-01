@@ -45,7 +45,7 @@ module.exports={
     GetPatientsPaginatedData: async(req,res)=>{
         try {
             const page = parseInt(req.query.page) || 1
-            const limit = 15;
+            const limit = 10;
 
             const skip = (page -1) * limit;
             const total = await User.countDocuments();
@@ -53,7 +53,7 @@ module.exports={
             const Patients = await User.find()
             .skip(skip).
             limit(limit).
-            sort({createdAt: -1});
+            sort({_id: -1});
             const totalPages = Math.ceil(total/limit);
 
             return res.status(200).json({
@@ -65,6 +65,21 @@ module.exports={
                 total: total,
             })
 
+        } catch (error) {
+            return res.status(500).json({
+                success:false,
+                message:"Internal Server Error",
+            })
+        }
+    },
+    GetAllPatients: async(req,res)=>{
+        try {
+            const Data = await User.find().sort({_id:-1})
+            return res.status(200).json({
+                success:true,
+                message:"Patient Data Retrieved",
+                data: Data
+            })
         } catch (error) {
             return res.status(500).json({
                 success:false,

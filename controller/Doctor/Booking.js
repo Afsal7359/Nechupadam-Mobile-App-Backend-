@@ -56,7 +56,7 @@ module.exports={
         try {
             
              const page = parseInt(req.query.page) || 1;
-             const limit = 15
+             const limit = 10
 
             const skip = (page - 1) * limit;
 
@@ -66,7 +66,8 @@ module.exports={
                 const bookings = await Booking.find()
                 .skip(skip)
                 .limit(limit)
-                .sort({ createdAt: -1 }); // Sort by creation date, newest first
+                .populate('patientId')
+                .sort({ _id: -1 }); // Sort by creation date, newest first
 
                 // Calculate total pages
                 const totalPages = Math.ceil(total / limit);
@@ -85,7 +86,8 @@ module.exports={
                 message:"Internal Server Error",
             })
         }
-    }
+    },
+    
     // AddBookingfromDoctor: async(req,res)=>{
     //     try {
     //         const {patientId,date,time,procedure,remarks}=req.body;

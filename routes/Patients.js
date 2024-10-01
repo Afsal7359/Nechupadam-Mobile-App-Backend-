@@ -23,11 +23,13 @@ const router= express.Router();
 //booking
 router.post('/add-booking',userAuthMid,Booking.AddBooking);
 router.get('/get-booking',userAuthMid,Booking.GetBooking);
-router.get('/booking',userAuthMid,Booking.PaginatedGetBooking)
+router.get('/booking',userAuthMid,Booking.PaginatedGetBooking);
 
 //Add Patient
 router.post('/add-patient',userAuthMid,Patient.AddPatientsfromDoctor);
 router.get('/get-patients',userAuthMid,Patient.GetPatientsPaginatedData);
+router.get('/allpatients',userAuthMid,Patient.GetAllPatients);
+
 
 //add Notification 
 router.post('/add-notification',userAuthMid,Notification.AddNotification);
