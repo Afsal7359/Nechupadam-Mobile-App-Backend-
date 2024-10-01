@@ -73,6 +73,7 @@ module.exports={
 
                 return res.status(200).json({
                 success: true,
+                message:"Booking Data",
                 data: bookings,
                 currentPage: page,
                 totalPages: totalPages,
