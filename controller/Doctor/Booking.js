@@ -51,6 +51,39 @@ module.exports={
                 message:"Internal Server Error",
             })
         }
+    },
+    PaginatedGetBooking: async(req,res)=>{
+        try {
+            
+             const page = parseInt(req.query.page) || 1;
+             const limit = 15
+
+            const skip = (page - 1) * limit;
+
+            const total = await Booking.countDocuments();
+
+             // Fetch bookings with pagination
+                const bookings = await Booking.find()
+                .skip(skip)
+                .limit(limit)
+                .sort({ createdAt: -1 }); // Sort by creation date, newest first
+
+                // Calculate total pages
+                const totalPages = Math.ceil(total / limit);
+
+                return res.status(200).json({
+                success: true,
+                data: bookings,
+                currentPage: page,
+                totalPages: totalPages,
+                total: total,
+                });
+        } catch (error) {
+            return res.status(500).json({
+                success:false,
+                message:"Internal Server Error",
+            })
+        }
     }
     // AddBookingfromDoctor: async(req,res)=>{
     //     try {

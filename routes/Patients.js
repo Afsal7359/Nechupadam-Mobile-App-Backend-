@@ -22,7 +22,8 @@ const router= express.Router();
 
 //booking
 router.post('/add-booking',userAuthMid,Booking.AddBooking);
-router.get('/get-booking',userAuthMid,Booking.GetBooking)
+router.get('/get-booking',userAuthMid,Booking.GetBooking);
+router.get('/booking',userAuthMid,Booking.PaginatedGetBooking)
 
 //Add Patient
 router.post('/add-patient',Patient.AddPatientsfromDoctor);
