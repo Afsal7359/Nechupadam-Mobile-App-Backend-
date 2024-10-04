@@ -42,7 +42,7 @@ module.exports={
                     message: "Patient Id is required" 
                 }); 
             }
-            const points = await Points.find({patientId:patientId});
+            const points = await Points.find({patientId:patientId}).sort({_id:-1});
             if(points){
                 return res.status(200).json({
                     success:true,

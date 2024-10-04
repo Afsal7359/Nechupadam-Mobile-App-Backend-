@@ -51,7 +51,7 @@ module.exports={
                     message: "Patient Id is required" 
                 }); 
             }
-            const newAppoinment = await NewAppoinmnet.find({patientId:patientId});
+            const newAppoinment = await NewAppoinmnet.find({patientId:patientId}).sort({_id:-1});
             if(newAppoinment){
                 return res.status(200).json({
                     success:true,

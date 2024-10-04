@@ -45,7 +45,7 @@ module.exports={
                     message: "Patient Id is required" 
                 }); 
             }
-            const dentalHistory = await DentalHistory.find({patientId:patientId});
+            const dentalHistory = await DentalHistory.find({patientId:patientId}).sort({_id:-1});
             if(dentalHistory){
                 return res.status(200).json({
                     success:true,

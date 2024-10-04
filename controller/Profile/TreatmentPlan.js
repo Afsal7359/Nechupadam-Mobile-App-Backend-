@@ -46,7 +46,7 @@ module.exports={
                     message: "Patient Id is required" 
                 }); 
             }
-            const treatmentPlan = await TreatmentPlan.find({patientId:patientId});
+            const treatmentPlan = await TreatmentPlan.find({patientId:patientId}).sort({_id:-1});
             if(treatmentPlan){
                 return res.status(200).json({
                     success:true,

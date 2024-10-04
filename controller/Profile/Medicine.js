@@ -41,7 +41,7 @@ module.exports={
                     message: "Patient Id is required" 
                 }); 
             }
-            const medicine = await Medicine.find({patientId:patientId});
+            const medicine = await Medicine.find({patientId:patientId}).sort({_id:-1});
             if(medicine){
                 return res.status(200).json({
                     success:true,

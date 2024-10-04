@@ -48,7 +48,7 @@ module.exports={
                 }); 
             }
 
-            const labInvestigation = await LabInvestigation.find({patientId:patientId});
+            const labInvestigation = await LabInvestigation.find({patientId:patientId}).sort({_id:-1});
             if(LabInvestigation){
                 return res.status(200).json({
                     success:true,

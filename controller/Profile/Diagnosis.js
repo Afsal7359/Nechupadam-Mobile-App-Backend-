@@ -42,7 +42,7 @@ module.exports={
                     message: "Patient Id is required" 
                 }); 
             }
-            const diagnosis = await Diagnosis.find({patientId:patientId});
+            const diagnosis = await Diagnosis.find({patientId:patientId}).sort({_id:-1});
             if(diagnosis){
                 return res.status(200).json({
                     success:true,

@@ -41,7 +41,7 @@ module.exports={
                     message: "Patient Id is required" 
                 }); 
             }
-            const drugallergy = await DrugAllergy.find({patientId:patientId});
+            const drugallergy = await DrugAllergy.find({patientId:patientId}).sort({_id:-1});
             if(drugallergy){
                 return res.status(200).json({
                     success:true,

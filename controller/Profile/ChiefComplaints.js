@@ -51,7 +51,7 @@ module.exports={
                     message: "Patient Id is required" 
                 });
             }
-            const chiefComplaints = await CheifComplaint.find({patientId:patientId});
+            const chiefComplaints = await CheifComplaint.find({patientId:patientId}).sort({_id:-1})
             console.log(chiefComplaints,"cccccc");
             if(chiefComplaints){
                 return res.status(200).json({
