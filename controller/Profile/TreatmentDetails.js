@@ -17,7 +17,7 @@ module.exports={
                     message:"Patient Id is  require",
                 });
             }
-            const newData = await TreatmentDeatils.create({content,patientId}).sort({_id:-1});
+            const newData = await TreatmentDeatils.create({content,patientId});
             return res.status(200).json({
                 success:true,
                 message: "TreatmentDetails Added Successfully",
@@ -42,7 +42,7 @@ module.exports={
                     message: "Patient Id is required" 
                 }); 
             }
-            const treatmentDetails = await TreatmentDeatils.find({patientId:patientId});
+            const treatmentDetails = await TreatmentDeatils.find({patientId:patientId}).sort({_id:-1});
             if(treatmentDetails){
                 return res.status(200).json({
                     success:true,
