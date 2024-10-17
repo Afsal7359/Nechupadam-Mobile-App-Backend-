@@ -8,6 +8,15 @@ const BookingSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',
     },
+    patientName:{
+        type:String,
+    },
+    patientAddress:{
+        type:String,
+    },
+    patientNumber:{
+        type:String,
+    },
     procedure:{
         type:String
     },

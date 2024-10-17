@@ -3,7 +3,7 @@ const User = require("../../models/UserModel");
 module.exports={
     AddPatientsfromDoctor:async(req,res)=>{
         try {
-            const {name,age,dob,address,sex,phone,doctor,patientNo}=req.body;
+            const {name,age,dob,address,sex,phone,doctor,date,patientNo}=req.body;
             if(!name){
                 return res.status(400).json({success:false,message:"Name is required"});
             }else if(!age){
@@ -20,6 +20,8 @@ module.exports={
                 return res.status(400).json({success:false,message:"Doctor is required"})
             }else if(!patientNo){
                 return res.status(400).json({success:false,message:"Patient No is required"})
+            }else if(!date){
+                return res.status(400).json({success:false,message:"date is required"})
             }
             const userExisting = await User.find({phone:phone});
             if(userExisting.length>0){
@@ -30,7 +32,7 @@ module.exports={
                 })
             }
             const patient = new User({
-                name,age,dob,address,sex,phone,doctor,patientNo
+                name,age,dob,address,sex,phone,doctor,patientNo,date
             })
             await patient.save();
             res.status(200).json({success:true,message:"Patient Added Successfully",data:patient})

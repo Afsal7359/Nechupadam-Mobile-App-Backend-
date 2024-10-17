@@ -3,25 +3,20 @@ const Booking = require("../../models/Booking");
 module.exports={
     AddBooking: async(req,res)=>{
         try {
-            const {patientId,date,time,procedure,remarks}=req.body;
+            const {patientId,patientName,patientNumber,patientAddress,date,time,procedure,remarks}=req.body;
 
-            if(!patientId){
+            if(!time){
                 return res.status(400).json({
                     success:false,
-                    message:"Patient ID is required"
+                   message:"Time is required"
                 })
             }else if(!date){
                 return res.status(400).json({
                     success:false,
                     message:"Date is required"
                 })
-            }else if(!time){
-                return res.status(400).json({
-                    success:false,
-                    message:"Time is required"
-                })
             }
-            const Data = await Booking.create({patientId,date,time,procedure,remarks});
+            const Data = await Booking.create({patientId,patientName,patientAddress,patientNumber,date,time,procedure,remarks});
             return res.status(200).json({
                 success:true,
                 message:"Booking Added Successfully",
@@ -35,6 +30,15 @@ module.exports={
             })
         }
     },
+    // AddBookingFromDoctor: async(req,res)=>{
+    //     try {
+            
+    //     } catch (error) {
+    //         return res.status(200).json({
+
+    //         })
+    //     }
+    // },
     GetBooking: async(req,res)=>{
         try {
             const id = req.userId

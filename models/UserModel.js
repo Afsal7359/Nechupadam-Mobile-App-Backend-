@@ -37,6 +37,10 @@ const UserSchema = new mongoose.Schema({
     dob:{
         type:String,
         trim:true,
+    },
+    date:{
+        type:String,
+        trim:true
     }
 })
 const  User = mongoose.model('user',UserSchema);
