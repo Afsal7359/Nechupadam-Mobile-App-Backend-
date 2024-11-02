@@ -15,7 +15,7 @@ const UserSchema = new mongoose.Schema({
         trim:true,
     },
     patientNo:{
-        type:String,
+        type:Number,
         trim:true,
     },
     age:{
