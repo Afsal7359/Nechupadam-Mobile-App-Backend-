@@ -7,6 +7,7 @@ const BookingSchema = new mongoose.Schema({
     patientId:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',
+        default:null,
     },
     patientName:{
         type:String,
