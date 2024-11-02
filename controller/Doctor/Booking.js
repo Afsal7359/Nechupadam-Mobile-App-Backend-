@@ -91,6 +91,58 @@ module.exports={
             })
         }
     },
+    UpdateBooking: async (req, res) => {
+        try {
+            const { bookingId } = req.body; 
+            // Validate that bookingId is provided
+            if (!bookingId) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Booking ID is required",
+                });
+            }
+    
+            // Create an object to hold the fields to update
+            const updateFields = {};
+    
+            // Check and add fields to updateFields only if they are present in the request body
+            if (req.body.patientId) updateFields.patientId = req.body.patientId;
+            if (req.body.patientName) updateFields.patientName = req.body.patientName;
+            if (req.body.patientNumber) updateFields.patientNumber = req.body.patientNumber;
+            if (req.body.patientAddress) updateFields.patientAddress = req.body.patientAddress;
+            if (req.body.date) updateFields.date = req.body.date;
+            if (req.body.time) updateFields.time = req.body.time;
+            if (req.body.procedure) updateFields.procedure = req.body.procedure;
+            if (req.body.remarks) updateFields.remarks = req.body.remarks;
+    
+            // Find the booking by ID and update with provided fields
+            const updatedBooking = await Booking.findByIdAndUpdate(
+                bookingId,
+                updateFields, // Only update the fields present in updateFields
+                { new: true } // Return the updated document
+            );
+    
+            // Check if the booking was found and updated
+            if (!updatedBooking) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Booking not found",
+                });
+            }
+    
+            return res.status(200).json({
+                success: true,
+                message: "Booking updated successfully",
+                data: updatedBooking,
+            });
+        } catch (error) {
+            return res.status(500).json({
+                success: false,
+                message: "Internal Server Error",
+                error: error.message,
+            });
+        }
+    }
     
     
 }
