@@ -56,6 +56,21 @@ module.exports={
             })
         }
     },
+    GetAllBooking : async(req,res)=>{
+        try {
+            const Data = await Booking.find().sort({_id:-1}).populate('patientId');
+            return res.status(200).json({
+                success:true,
+                message:"Booking Details",
+                data:Data
+            })
+        } catch (error) {
+            re.status(500).json({
+                success:false,
+                message:"Internal Server Error",
+            })
+        }
+    },
     PaginatedGetBooking: async(req,res)=>{
         try {
             

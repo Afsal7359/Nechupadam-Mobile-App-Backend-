@@ -25,6 +25,7 @@ router.post('/add-booking',userAuthMid,Booking.AddBooking);
 router.get('/get-booking',userAuthMid,Booking.GetBooking);
 router.get('/booking',userAuthMid,Booking.PaginatedGetBooking);
 router.post('/update-booking',userAuthMid,Booking.UpdateBooking);
+router.get('/all-booking',userAuthMid,Booking.GetAllBooking);
 
 //Add Patient
 router.post('/add-patient',userAuthMid,Patient.AddPatientsfromDoctor);
