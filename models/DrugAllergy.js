@@ -9,6 +9,10 @@ const DrugAllergySchema = new mongoose.Schema({
         type:String ,
         required: true 
     },
+    date:{
+        type:String ,
+        required: true 
+    }
 })
 const DrugAllergy = mongoose.model('DrugAllergy',DrugAllergySchema);
 module.exports = DrugAllergy;
