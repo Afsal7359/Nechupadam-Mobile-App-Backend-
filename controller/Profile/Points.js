@@ -4,7 +4,7 @@ const Points = require("../../models/Points");
 module.exports={
     AddPoints: async(req,res)=>{
         try {
-            const { content, patientId} = req.body;
+            const { content, patientId,date} = req.body;
             
             if(!content){
                 return res.status(400).json({
@@ -17,7 +17,7 @@ module.exports={
                     message:"Patient Id is require",
                 });
             }
-            const newData = await Points.create({content,patientId});
+            const newData = await Points.create({content,patientId,date});
             return res.status(200).json({
                 success:true,
                 message: "Points Added Successfully",
@@ -65,7 +65,7 @@ module.exports={
     },
     UpdatePoints: async(req,res)=>{
         try {
-            const {content,patientId} = req.body;
+            const {content,patientId,date} = req.body;
             const {id} = req.query;
             if(!id){
                 return res.status(400).json({
@@ -85,7 +85,7 @@ module.exports={
             }
             const updatePointsdata = await Points.findByIdAndUpdate(
                 id,
-                {content,patientId},
+                {content,patientId,date},
                 {new:true,runValidators:true}
             );
             

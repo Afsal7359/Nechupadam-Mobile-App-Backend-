@@ -8,6 +8,10 @@ const MedicineSchema = new mongoose.Schema({
         type:String,
         require:true
     },
+    date:{
+        type:String,
+        require:true
+    }
 })
 const Medicine = mongoose.model('Medicine',MedicineSchema);
 module.exports=Medicine;

@@ -8,6 +8,10 @@ const TreatmentDetailSchema = new mongoose.Schema({
         type:String,
         require:true
     },
+    date:{
+        type:String,
+        require:true
+    }
 })
 const TreatmentDeatils = mongoose.model('TreatmentDeatils',TreatmentDetailSchema);
 module.exports=TreatmentDeatils;

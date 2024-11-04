@@ -8,6 +8,10 @@ const PointsSchema = new mongoose.Schema({
         type:String,
         require:true
     },
+    date:{
+        type:String,
+        require:true
+    }
 })
 const Points = mongoose.model('Points',PointsSchema);
 module.exports=Points;

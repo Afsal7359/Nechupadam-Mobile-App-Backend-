@@ -7,6 +7,10 @@ const DiagnosisSchema = new mongoose.Schema({
     content :{
         type:String,
         require:true,
+    },
+    date:{
+        type:String,
+        require:true,
     }
 })
 const Diagnosis = mongoose.model('Diagnosis',DiagnosisSchema);

@@ -4,7 +4,7 @@ const TreatmentDeatils = require("../../models/TreatmentDetails");
 module.exports={
     AddTreatmentDetails: async(req,res)=>{
         try {
-            const { content, patientId} = req.body;
+            const { content, patientId,date} = req.body;
             
             if(!content){
                 return res.status(400).json({
@@ -17,7 +17,7 @@ module.exports={
                     message:"Patient Id is  require",
                 });
             }
-            const newData = await TreatmentDeatils.create({content,patientId});
+            const newData = await TreatmentDeatils.create({content,patientId,date});
             return res.status(200).json({
                 success:true,
                 message: "TreatmentDetails Added Successfully",
@@ -65,7 +65,7 @@ module.exports={
     },
     UpdateTreatmentDetails: async(req,res)=>{
         try {
-            const {content,patientId} = req.body;
+            const {content,patientId,date} = req.body;
             const {id} = req.query;
             if(!id){
                 return res.status(400).json({
@@ -85,7 +85,7 @@ module.exports={
             }
             const updateTreatmentDetailsdata = await TreatmentDeatils.findByIdAndUpdate(
                 id,
-                {content,patientId},
+                {content,patientId,date},
                 {new:true,runValidators:true}
             );
             
