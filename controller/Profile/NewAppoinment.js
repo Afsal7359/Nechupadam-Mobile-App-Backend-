@@ -127,5 +127,39 @@ module.exports={
                 error:error.message
             })
         }
-    }
+    },
+    DeleteNewAppoinment: async (req, res) => {
+        try {
+            const { id } = req.query;
+
+            if (!id) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Next Appoinment ID is required"
+                });
+            }
+
+            const deletedComplaint = await NewAppoinmnet.findByIdAndDelete(id);
+
+            if (!deletedComplaint) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Next Appoinment not found"
+                });
+            }
+
+            return res.status(200).json({
+                success: true,
+                message: "Next Appoinment deleted successfully",
+            });
+
+        } catch (error) {
+            console.error("Error deleting Next Appoinment:", error);
+            return res.status(500).json({
+                success: false,
+                message: "Internal Server Error",
+                error: error.message
+            });
+        }
+    },
 }

@@ -109,5 +109,39 @@ module.exports={
                 error:error.message
             })
         }
-    }
+    },
+    DeleteDiagnosis: async (req, res) => {
+        try {
+            const { id } = req.query;
+
+            if (!id) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Diagnosis ID is required"
+                });
+            }
+
+            const deletedComplaint = await Diagnosis.findByIdAndDelete(id);
+
+            if (!deletedComplaint) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Diagnosis not found"
+                });
+            }
+
+            return res.status(200).json({
+                success: true,
+                message: "Diagnosis deleted successfully",
+            });
+
+        } catch (error) {
+            console.error("Error deleting Diagnosis:", error);
+            return res.status(500).json({
+                success: false,
+                message: "Internal Server Error",
+                error: error.message
+            });
+        }
+    },
 }

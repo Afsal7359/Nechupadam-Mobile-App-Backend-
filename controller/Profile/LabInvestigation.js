@@ -122,5 +122,39 @@ module.exports={
                 error:error.message
             })
         }
-    }
+    },
+    DeleteLabInvestigation: async (req, res) => {
+        try {
+            const { id } = req.query;
+
+            if (!id) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Lab Investigation ID is required"
+                });
+            }
+
+            const deletedComplaint = await LabInvestigation.findByIdAndDelete(id);
+
+            if (!deletedComplaint) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Lab Investigation not found"
+                });
+            }
+
+            return res.status(200).json({
+                success: true,
+                message: "Lab Investigation deleted successfully",
+            });
+
+        } catch (error) {
+            console.error("Error deleting Lab Investigation:", error);
+            return res.status(500).json({
+                success: false,
+                message: "Internal Server Error",
+                error: error.message
+            });
+        }
+    },
 }

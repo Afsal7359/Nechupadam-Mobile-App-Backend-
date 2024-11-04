@@ -116,5 +116,39 @@ module.exports={
                 error:error.message
             })
         }
-    }
+    },
+    DeleteDrugHistory: async (req, res) => {
+        try {
+            const { id } = req.query;
+
+            if (!id) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Drug History ID is required"
+                });
+            }
+
+            const deletedComplaint = await DrugHistory.findByIdAndDelete(id);
+
+            if (!deletedComplaint) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Drug History not found"
+                });
+            }
+
+            return res.status(200).json({
+                success: true,
+                message: "Drug History deleted successfully",
+            });
+
+        } catch (error) {
+            console.error("Error deleting Drug History:", error);
+            return res.status(500).json({
+                success: false,
+                message: "Internal Server Error",
+                error: error.message
+            });
+        }
+    },
 }
