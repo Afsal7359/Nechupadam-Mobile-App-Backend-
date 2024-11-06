@@ -4,38 +4,55 @@ const  cloudinary = require("../../utils/cloudinary");
 module.exports={
     AddLabInvestigation: async(req,res)=>{
         try {
-            const {patientId,name}=req.body;
-            const {image}=req.file
-            if(!patientId){
+            const { patientId, name } = req.body;
+            
+            // Input validation
+            if (!patientId) {
                 return res.status(400).json({
-                    success:false,
-                    message:"Patient ID is required"
+                    success: false,
+                    message: "Patient ID is required"
                 });
-            }else if(!name){
-                return res.status(400).json({
-                    success:false,
-                    message:"name  is required"
-                })
-            }else if(!image){
-                return res.status(400).json({
-                    success:false,
-                    message:"image is required"
-                })
             }
-            const imageResult = image ? await cloudinary.uploader.upload(image[0].path, { folder: 'DentalClinic' }) : null;
-           
-            const NewData = await LabInvestigation.create({ name,image:imageResult?imageResult.secure_url:null,patientId })
+            
+            if (!name) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Name is required"
+                });
+            }
+            
+            // Check if file exists in request
+            if (!req.file) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Image is required"
+                });
+            }
+    
+            // Upload image to cloudinary
+            const imageResult = await cloudinary.uploader.upload(req.file.path, { 
+                folder: 'DentalClinic' 
+            });
+    
+            // Create new lab investigation record
+            const NewData = await LabInvestigation.create({
+                name,
+                image: imageResult.secure_url,
+                patientId
+            });
+    
             return res.status(200).json({
                 success: true,
-                message: "LabInvestigation Added Successfully",
+                message: "Lab Investigation Added Successfully",
                 data: NewData,
             });
+    
         } catch (error) {
             res.status(500).json({
-                success:false,
+                success: false,
                 message: "Internal Server Error",
-                error:error.message
-            })
+                error: error.message
+            });
         }
     },
     GetLabInvestigation: async(req,res)=>{
