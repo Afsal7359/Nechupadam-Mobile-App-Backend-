@@ -1,11 +1,11 @@
 const LabInvestigation = require("../../models/LabInvestigation");
-const  cloudinary = require("../../utils/cloudinarry");
+const  cloudinary = require("../../utils/cloudinary");
 
 module.exports={
     AddLabInvestigation: async(req,res)=>{
         try {
             const {patientId,name}=req.body;
-            const {image}=req.files
+            const {image}=req.file
             if(!patientId){
                 return res.status(400).json({
                     success:false,
