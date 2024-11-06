@@ -30,9 +30,8 @@ module.exports={
             }
     
             // Upload image to cloudinary
-            const imageResult = await cloudinary.uploader.upload(req.file.path, { 
-                folder: 'DentalClinic' 
-            });
+            const imageResult = await cloudinary.uploader.upload(req.file.path);
+    console.log(imageResult,"imgres");
     
             // Create new lab investigation record
             const NewData = await LabInvestigation.create({
