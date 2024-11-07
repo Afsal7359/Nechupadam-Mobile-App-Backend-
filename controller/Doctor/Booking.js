@@ -182,46 +182,49 @@ module.exports={
             });
         }
     },
-    GetBookingCountTotal : async(req,res)=>{
-        try {
-            // Get total booking count
-            const bookingCount = await Booking.countDocuments();
-        
-            // Get total patient count
-            const patientCount = await User.countDocuments();
-        
-            // Get today's bookings count
-            const today = new Date();
-            console.log(today,"today");
-            const todays= new Date(today.getFullYear(), today.getMonth(), today.getDate())
-            const formattedDate = todays.toISOString().slice(0, 10);
-            const todaysBookings = await Booking.countDocuments({
-                date: {
-                $gte: formattedDate,
-                $lt: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1)
-              }
-            });
-            const todaysPatients = await User.countDocuments({
-                createdAt: {
-                  $gte: new Date(today.getFullYear(), today.getMonth(), today.getDate()),
-                  $lt: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1)
-                }
-              });
-        
-            return res.status(200).json({
-              success: true,
-              data: {
-                totalBookings: bookingCount,
-                totalPatients: patientCount,
-                todaysBookings: todaysBookings,
-                todaysPatients: todaysPatients
-              }
-            });
-          } catch (error) {
-            return res.status(500).json({
-              success: false,
-              message: "Internal Server Error",
-            });
-          }
+    GetBookingCountTotal: async(req,res)=>{         
+        try {             
+          // Get total booking count             
+          const bookingCount = await Booking.countDocuments();
+                       
+          // Get total patient count             
+          const patientCount = await User.countDocuments({ isdeleted: false });
+                       
+          // Get today's bookings count             
+          const today = new Date();             
+          console.log(today,"today");             
+          const todays= new Date(today.getFullYear(), today.getMonth(), today.getDate())             
+          const formattedDate = todays.toISOString().slice(0, 10);             
+          const todaysBookings = await Booking.countDocuments({
+            date: {
+              $gte: formattedDate,
+              $lt: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1)
+            },
+          });
+                       
+          const todaysPatients = await User.countDocuments({
+            createdAt: {
+              $gte: new Date(today.getFullYear(), today.getMonth(), today.getDate()),
+              $lt: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1)
+            },
+            isdeleted: false
+          });
+                       
+          return res.status(200).json({
+            success: true,
+            data: {
+              totalBookings: bookingCount,
+              totalPatients: patientCount,
+              todaysBookings: todaysBookings,
+              todaysPatients: todaysPatients
+            }
+          });
+                 
+        } catch (error) {
+          return res.status(500).json({
+            success: false,
+            message: "Internal Server Error",
+          });
         }
+      }
 }
