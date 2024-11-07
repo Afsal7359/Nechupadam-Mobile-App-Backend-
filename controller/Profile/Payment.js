@@ -154,10 +154,12 @@ module.exports={
         // Get Payments by Patient ID
         GetFeesByPatientId: async (req, res) => {
             try {
-                const { patientId } = req.query;
-
-                const payments = await Payment.find({ patientId }).sort({ date: -1 });
-
+                const { id } = req.query;
+                console.log(id,"patientId");
+                
+                const payments = await Payment.find({ patientId:id }).sort({ date: -1 });
+                console.log(payments,"payments");
+                
                 return res.status(200).json({
                     success: true,
                     message: "Payments Retrieved Successfully",
