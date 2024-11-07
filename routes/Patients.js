@@ -21,7 +21,7 @@ const Payment = require('../controller/Profile/Payment');
 const router= express.Router();
 
 
-router.post('/counts',userAuthMid,Booking.GetBookingCountTotal);
+router.get('/counts',userAuthMid,Booking.GetBookingCountTotal);
 
 //booking
 router.post('/add-booking',userAuthMid,Booking.AddBooking);
