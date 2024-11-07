@@ -154,7 +154,7 @@ module.exports={
         // Get Payments by Patient ID
         GetFeesByPatientId: async (req, res) => {
             try {
-                const { patientId } = req.params;
+                const { patientId } = req.query;
 
                 const payments = await Payment.find({ patientId }).sort({ date: -1 });
 
