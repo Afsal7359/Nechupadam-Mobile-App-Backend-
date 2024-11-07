@@ -21,17 +21,22 @@ const Payment = require('../controller/Profile/Payment');
 const router= express.Router();
 
 
+router.post('/counts',userAuthMid,Booking.GetBookingCountTotal);
+
 //booking
 router.post('/add-booking',userAuthMid,Booking.AddBooking);
 router.get('/get-booking',userAuthMid,Booking.GetBooking);
 router.get('/booking',userAuthMid,Booking.PaginatedGetBooking);
 router.post('/update-booking',userAuthMid,Booking.UpdateBooking);
 router.get('/all-booking',userAuthMid,Booking.GetAllBooking);
+router.get('/delete-booking',userAuthMid,Booking.DeleteBooking);
 
 //Add Patient
 router.post('/add-patient',userAuthMid,Patient.AddPatientsfromDoctor);
 router.get('/get-patients',userAuthMid,Patient.GetPatientsPaginatedData);
 router.get('/allpatients',userAuthMid,Patient.GetAllPatients);
+router.post('/update-patients',userAuthMid,Patient.EditPatient);
+router.get('/delete-patient',userAuthMid,Patient.DeletePatient);
 
 
 //add Notification 

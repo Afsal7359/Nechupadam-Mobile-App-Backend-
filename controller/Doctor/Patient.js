@@ -88,5 +88,65 @@ module.exports={
                 message:"Internal Server Error",
             })
         }
+    },
+    EditPatient: async (req, res) => {
+        try {
+            const { id } = req.query;
+            const { name, age, dob, address, sex, phone, doctor, date, patientNo } = req.body;
+    
+            // Check if the patient exists
+            const patient = await User.findById(id);
+            if (!patient) {
+                return res.status(404).json({ success: false, message: "Patient not found" });
+            }
+    
+            // Update the patient's information
+            patient.name = name || patient.name;
+            patient.age = age || patient.age;
+            patient.dob = dob || patient.dob;
+            patient.address = address || patient.address;
+            patient.sex = sex || patient.sex;
+            patient.phone = phone || patient.phone;
+            patient.doctor = doctor || patient.doctor;
+            patient.patientNo = patientNo || patient.patientNo;
+            patient.date = date || patient.date;
+    
+            await patient.save();
+            return res.status(200).json({
+                success: true,
+                message: "Patient updated successfully",
+                data: patient
+            });
+        } catch (error) {
+            return res.status(500).json({
+                success: false,
+                message: "Internal Server Error",
+                error: error.message
+            });
+        }
+    },
+    
+    DeletePatient: async (req, res) => {
+        try {
+            const { id } = req.query;
+    
+            // Check if the patient exists
+            const patient = await User.findById(id);
+            if (!patient) {
+                return res.status(404).json({ success: false, message: "Patient not found" });
+            }
+    
+            await patient.remove();
+            return res.status(200).json({
+                success: true,
+                message: "Patient deleted successfully"
+            });
+        } catch (error) {
+            return res.status(500).json({
+                success: false,
+                message: "Internal Server Error",
+                error: error.message
+            });
+        }
     }
 }

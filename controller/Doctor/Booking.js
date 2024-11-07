@@ -1,4 +1,5 @@
 const Booking = require("../../models/Booking");
+const User = require("../../models/UserModel");
 
 module.exports={
     AddBooking: async(req,res)=>{
@@ -108,9 +109,9 @@ module.exports={
     },
     UpdateBooking: async (req, res) => {
         try {
-            const { bookingId } = req.body; 
+            const { id } = req.query; 
             // Validate that bookingId is provided
-            if (!bookingId) {
+            if (!id) {
                 return res.status(400).json({
                     success: false,
                     message: "Booking ID is required",
@@ -132,7 +133,7 @@ module.exports={
     
             // Find the booking by ID and update with provided fields
             const updatedBooking = await Booking.findByIdAndUpdate(
-                bookingId,
+                id,
                 updateFields, // Only update the fields present in updateFields
                 { new: true } // Return the updated document
             );
@@ -157,7 +158,70 @@ module.exports={
                 error: error.message,
             });
         }
-    }
+    },
+    DeleteBooking: async(req,res)=>{
+        try {
+            const { id } = req.query;
     
+            // Check if the patient exists
+            const bookings = await Booking.findById(id);
+            if (!bookings) {
+                return res.status(404).json({ success: false, message: "booking not found" });
+            }
     
+            await bookings.remove();
+            return res.status(200).json({
+                success: true,
+                message: "bookings deleted successfully"
+            });
+        } catch (error) {
+            return res.status(500).json({
+                success: false,
+                message: "Internal Server Error",
+                error: error.message,
+            });
+        }
+    },
+    GetBookingCountTotal : async(req,res)=>{
+        try {
+            // Get total booking count
+            const bookingCount = await Booking.countDocuments();
+        
+            // Get total patient count
+            const patientCount = await User.countDocuments();
+        
+            // Get today's bookings count
+            const today = new Date();
+            console.log(today,"today");
+            const todays= new Date(today.getFullYear(), today.getMonth(), today.getDate())
+            const formattedDate = todays.toISOString().slice(0, 10);
+            const todaysBookings = await Booking.countDocuments({
+                date: {
+                $gte: formattedDate,
+                $lt: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1)
+              }
+            });
+            const todaysPatients = await User.countDocuments({
+                createdAt: {
+                  $gte: new Date(today.getFullYear(), today.getMonth(), today.getDate()),
+                  $lt: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1)
+                }
+              });
+        
+            return res.status(200).json({
+              success: true,
+              data: {
+                totalBookings: bookingCount,
+                totalPatients: patientCount,
+                todaysBookings: todaysBookings,
+                todaysPatients: todaysPatients
+              }
+            });
+          } catch (error) {
+            return res.status(500).json({
+              success: false,
+              message: "Internal Server Error",
+            });
+          }
+        }
 }
