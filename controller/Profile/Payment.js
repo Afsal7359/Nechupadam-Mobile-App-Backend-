@@ -15,6 +15,11 @@ module.exports={
                         success:false,
                         message: "amount is required"
                     })
+                }else if(!type){
+                    res.status(404).json({
+                        success:false,
+                        message: "type is required"
+                    })
                 }
                 const newData = await Payment.create({amount,patientId,date,name,paymentMethod,type});
                 return res.status(200).json({
@@ -157,7 +162,7 @@ module.exports={
                 const { id } = req.query;
                 console.log(id,"patientId");
                 
-                const payments = await Payment.find({ patientId:id }).sort({ date: -1 });
+                const payments = await Payment.find({ patientId:id }).sort({ _id: -1 });
                 console.log(payments,"payments");
                 
                 return res.status(200).json({
