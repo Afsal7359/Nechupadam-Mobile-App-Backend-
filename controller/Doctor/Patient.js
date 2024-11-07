@@ -52,7 +52,7 @@ module.exports={
             const skip = (page -1) * limit;
             const total = await User.countDocuments();
 
-            const Patients = await User.find()
+            const Patients = await User.find({isdeleted: { $ne: true }})
             .skip(skip).
             limit(limit).
             sort({_id: -1});
@@ -76,7 +76,7 @@ module.exports={
     },
     GetAllPatients: async(req,res)=>{
         try {
-            const Data = await User.find().sort({_id:-1})
+            const Data = await User.find({ isdeleted: { $ne: true }}).sort({_id:-1})
             return res.status(200).json({
                 success:true,
                 message:"Patient Data Retrieved",
@@ -131,12 +131,7 @@ module.exports={
             const { id } = req.query;
     
             // Check if the patient exists
-            const patient = await User.findById(id);
-            if (!patient) {
-                return res.status(404).json({ success: false, message: "Patient not found" });
-            }
-    
-            await patient.remove();
+            await User.updateOne({ _id: id }, { $set: { isdeleted: true } });
             return res.status(200).json({
                 success: true,
                 message: "Patient deleted successfully"
