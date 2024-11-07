@@ -5,36 +5,26 @@ const PaymentSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',
     },
-    due:{
+    amount:{
         type:Number,
         require:true
     },
-    fee:{
-        type:Number,
+    date:{
+        type:String,
         require:true
     },
-    payment:{
-        type:Number,
+    name:{
+        type:String,
+        require:true    
+    },
+    paymentMethod:{
+        type:String,
         require:true
     },
-    paymentItems:[{
-        amount:{
-            type:Number,
-            require:true
-        },
-        date:{
-            type:String,
-            require:true
-        },
-        paymentMethod:{
-            type:String,
-            require:true
-        },
-        installment:{
-            type:Boolean,
-            require:true
-        }
-    }]
+    type:{
+        type:String,
+        require:true
+    }
 })
 const Payment = mongoose.model('Payment',PaymentSchema);
 module.exports=Payment;    

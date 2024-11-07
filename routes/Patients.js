@@ -17,6 +17,7 @@ const Points = require('../controller/Profile/Points');
 const Booking = require('../controller/Doctor/Booking');
 const Patient = require('../controller/Doctor/Patient');
 const Notification = require('../controller/Doctor/Notification');
+const Payment = require('../controller/Profile/Payment');
 const router= express.Router();
 
 
@@ -115,6 +116,13 @@ router.post('/add-points',userAuthMid,Points.AddPoints);
 router.get('/get-points',userAuthMid,Points.GetPoints);
 router.post('/update-points',userAuthMid,Points.UpdatePoints);
 router.get('/delete-points',userAuthMid,Points.DeletePoints);
+
+//Payments
+router.post('/add-payment',userAuthMid,Payment.AddFees);
+router.get('/get-payment',userAuthMid,Payment.GetFeesByPatientId);
+router.post('/update-payment',userAuthMid,Payment.EditFees);
+router.get('/delete-payment',userAuthMid,Payment.DeleteFees);
+
 
 
 module.exports=router;
